@@ -1,9 +1,15 @@
 import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
 import config from './config';
 
 const app = express();
+
+mongoose.Promise = global.Promise;
+mongoose.connect(config.mongoUrl).catch((err) => {
+  console.error(err); // eslint-disable-line no-console
+});
 
 if (app.get('env') === 'production') {
   app.use(logger('common'));
