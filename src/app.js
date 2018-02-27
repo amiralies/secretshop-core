@@ -28,4 +28,4 @@ app.use((err, req, res, next) => {
   res.status(status).json({ success: false, status, message });
 });
 
-app.listen(config.app.port);
+app.listen(config.port);

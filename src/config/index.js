@@ -1,8 +1,8 @@
-const { PORT, NODE_ENV } = process.env;
+const { NODE_ENV, PORT } = process.env;
 
-export default {
-  app: {
-    port: PORT,
-    env: NODE_ENV,
-  },
+const config = {
+  env: NODE_ENV,
+  port: PORT || 3000,
 };
+
+export default config;
