@@ -20,11 +20,10 @@ describe('Counter model', () => {
   });
 
   it('should add mock doc to collection', async () => {
-    const counter = new Counter(mockDoc);
-    const savedCounter = await counter.save();
-    expect(savedCounter).toBeDefined();
-    expect(savedCounter._id).toBe(mockDoc._id);
-    expect(savedCounter.seq).toBe(0);
+    const counter = await new Counter(mockDoc).save();
+    expect(counter).toBeDefined();
+    expect(counter._id).toBe(mockDoc._id);
+    expect(counter.seq).toBe(0);
   });
 
   it('should increase mockId\'s seq by one', async () => {
