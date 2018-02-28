@@ -1,9 +1,7 @@
 import Counter from './counter';
 import Product from './product';
 
-const models = {
+export {
   Counter,
   Product,
 };
-
-export default models;

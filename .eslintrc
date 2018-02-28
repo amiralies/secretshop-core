@@ -6,6 +6,15 @@
       {
         "argsIgnorePattern": "next"
       }
+    ],
+    "max-len": [
+      "error",
+      120
     ]
+  },
+  "env": {
+    "node": true,
+    "es6": true,
+    "jest": true
   }
 }
