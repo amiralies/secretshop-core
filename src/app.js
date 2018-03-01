@@ -35,4 +35,4 @@ app.use((err, req, res, next) => {
   res.status(status).json({ success: false, status, message });
 });
 
-app.listen(config.port);
+export default app;
