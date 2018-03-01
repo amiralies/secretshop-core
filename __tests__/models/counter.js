@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
-import { Counter } from '../../src/models';
+import '../../src/models';
+
+const Counter = mongoose.model('Counter');
 
 const mockDoc = { _id: 'mockId' };
 /* eslint-disable  no-underscore-dangle */

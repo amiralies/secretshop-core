@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
-import { Product } from '../../src/models';
+import '../../src/models';
+
+const Product = mongoose.model('Product');
 
 jest.setTimeout(10000);
 

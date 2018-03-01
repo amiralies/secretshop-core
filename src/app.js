@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import config from './config';
 import './models';
+import routes from './routes';
 
 const app = express();
 
@@ -14,15 +15,13 @@ mongoose.connect(config.mongoUrl).catch((err) => {
 
 if (app.get('env') === 'production') {
   app.use(logger('common'));
-} else {
+} else if (app.get('env') === 'dev') {
   app.use(logger('dev'));
 }
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-  res.status(200).json({ success: true, message: 'helloworld' });
-});
+app.use('/', routes);
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
@@ -31,7 +30,8 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const { status, message } = err;
+  const { message } = err;
+  const status = err.status || 500;
   res.status(status).json({ success: false, status, message });
 });
 
