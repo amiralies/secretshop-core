@@ -34,6 +34,7 @@
     "supertest": "^3.0.0"
   },
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "joi": "^13.1.2",
