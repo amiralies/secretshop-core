@@ -11,14 +11,16 @@ const productSchema = new mongoose.Schema({
 });
 
 productSchema.pre('save', function handler(next) {
+  const product = this;
+
   // incremental product id implemention
-  if (this.isNew) {
+  if (product.isNew) {
     Counter.findByIdAndUpdate(
       { _id: 'productId' },
       { $inc: { seq: 1 } },
       { new: true, upsert: true },
     ).then((counter) => {
-      this.productId = counter.seq;
+      product.productId = counter.seq;
       next();
     }).catch(err => next(err));
   } else next();
