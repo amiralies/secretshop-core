@@ -10,7 +10,8 @@
     "max-len": [
       "error",
       120
-    ]
+    ],
+    "no-underscore-dangle": "off"
   },
   "env": {
     "node": true,

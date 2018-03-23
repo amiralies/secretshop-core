@@ -27,8 +27,8 @@ router.post('/', async (req, res, next) => {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) throw genHttpError(400, 'Wrong password');
     const refreshToken = await genRefreshToken();
-    const accessToken = await genAccessToken(user._id); // eslint-disable-line no-underscore-dangle
-    await new Session({ userId: user._id, refreshToken }).save(); // eslint-disable-line no-underscore-dangle
+    const accessToken = await genAccessToken(user._id);
+    await new Session({ userId: user._id, refreshToken }).save();
 
     res.status(201).json({
       success: true,
