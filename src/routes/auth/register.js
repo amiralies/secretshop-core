@@ -8,9 +8,17 @@ const User = mongoose.model('User');
 
 router.post('/', async (req, res, next) => {
   const userRegistrationSchema = {
-    name: Joi.string(),
-    email: Joi.string().email().error(genHttpError(400, 'Invalid email')),
-    password: Joi.string().min(6).error(genHttpError(400, 'Invalid password')),
+    name: Joi.string()
+      .required()
+      .error(genHttpError(400, 'Invalid name')),
+    email: Joi.string()
+      .email()
+      .required()
+      .error(genHttpError(400, 'Invalid email')),
+    password: Joi.string()
+      .min(6)
+      .required()
+      .error(genHttpError(400, 'Invalid password')),
   };
 
   try {

@@ -8,8 +8,8 @@ const Product = mongoose.model('Product');
 
 router.get('/', async (req, res, next) => {
   const querySchema = {
-    limit: Joi.number().min(1).max(200).error(genHttpError(400, 'Bad limit parameter')),
-    offset: Joi.number().min(0).error(genHttpError(400, 'Bad offset parameter')),
+    limit: Joi.number().min(1).max(200).error(genHttpError(400, 'Invalid limit parameter')),
+    offset: Joi.number().min(0).error(genHttpError(400, 'Invalid offset parameter')),
   };
 
   try {

@@ -34,7 +34,7 @@ describe('/products route', () => {
     expect(body).toBeDefined();
     expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Bad offset parameter');
+    expect(body.message).toBe('Invalid offset parameter');
   });
 
   it('should fail on sending string as offset parameter', async () => {
@@ -42,7 +42,7 @@ describe('/products route', () => {
     expect(body).toBeDefined();
     expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Bad offset parameter');
+    expect(body.message).toBe('Invalid offset parameter');
   });
 
   it('should fail on sending less than min limit parameter', async () => {
@@ -50,7 +50,7 @@ describe('/products route', () => {
     expect(body).toBeDefined();
     expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Bad limit parameter');
+    expect(body.message).toBe('Invalid limit parameter');
   });
 
   it('should fail on sending more than max limit parameter', async () => {
@@ -58,7 +58,7 @@ describe('/products route', () => {
     expect(body).toBeDefined();
     expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Bad limit parameter');
+    expect(body.message).toBe('Invalid limit parameter');
   });
 
   it('should fail on sending string as offset parameter', async () => {
@@ -66,7 +66,7 @@ describe('/products route', () => {
     expect(body).toBeDefined();
     expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Bad limit parameter');
+    expect(body.message).toBe('Invalid limit parameter');
   });
 
 
