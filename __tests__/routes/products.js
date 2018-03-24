@@ -1,5 +1,4 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
 import app from '../../src/app';
 
 const server = request.agent(app);
@@ -13,19 +12,7 @@ describe('/products route', () => {
     expect(body.offset).toBeDefined();
     expect(body.totalResult).toBeDefined();
     expect(body.currentResult).toBeDefined();
-    expect(body.products).toBeDefined();
-    expect(body.products.length).toBe(body.currentResult);
-  });
-
-  it('should get list of products with no filter ', async () => {
-    const { statusCode, body } = await server.get('/products');
-    expect(statusCode).toBe(200);
-    expect(body).toBeDefined();
-    expect(body.success).toBeTruthy();
-    expect(body.offset).toBeDefined();
-    expect(body.totalResult).toBeDefined();
-    expect(body.currentResult).toBeDefined();
-    expect(body.products).toBeDefined();
+    expect(body.products).toBeInstanceOf(Array);
     expect(body.products.length).toBe(body.currentResult);
   });
 
@@ -67,10 +54,5 @@ describe('/products route', () => {
     expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
     expect(body.message).toBe('Invalid limit parameter');
-  });
-
-
-  afterAll(() => {
-    mongoose.connection.close();
   });
 });
