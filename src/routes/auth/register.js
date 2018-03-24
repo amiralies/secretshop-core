@@ -34,7 +34,11 @@ router.post('/', async (req, res, next) => {
       },
     });
   } catch (err) {
-    next(err);
+    if (err.code === 11000) {
+      next(genHttpError(400, 'Email already exists'));
+    } else {
+      next(err);
+    }
   }
 });
 export default router;

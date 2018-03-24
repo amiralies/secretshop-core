@@ -11,7 +11,18 @@ const mockUser = {
   password: 'nicenstrongpw',
 };
 
+const existingUser = {
+  name: 'Carl johnson',
+  email: 'existing@aol.com',
+  password: 'anothernicenstrongpw',
+};
+
 describe('/auth/register route', () => {
+  beforeAll(async () => {
+    await server.post('/auth/register')
+      .send(existingUser);
+  });
+
   it('should fail on registering a user with no name', async () => {
     const noNameUser = { email: mockUser.email, password: mockUser.password };
     const { statusCode, body } = await server.post('/auth/register')
@@ -50,6 +61,13 @@ describe('/auth/register route', () => {
       .send(invalidPasswordUser);
     expect(statusCode).toBe(400);
     expect(body.message).toBe('Invalid password');
+  });
+
+  it('should fail on registering auser with existing email', async () => {
+    const { statusCode, body } = await server.post('/auth/register')
+      .send(existingUser);
+    expect(statusCode).toBe(400);
+    expect(body.message).toBe('Email already exists');
   });
 
   it('should register a user successfully', async () => {
