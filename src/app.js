@@ -31,7 +31,16 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   const { message } = err;
-  const status = err.status || 500;
+  let { status } = err;
+
+  if (status === undefined) {
+    if (err.isJoi) {
+      status = 400;
+    } else {
+      status = 500;
+    }
+  }
+
   res.status(status).json({ success: false, status, message });
 });
 
