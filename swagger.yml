@@ -1,0 +1,186 @@
+swagger: '2.0'
+info:
+  version: 0.0.0
+  title: Secretshop Core API
+tags:
+  - name: auth
+    description: Authentication
+  - name: products
+    description: Products
+paths:
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: Register a user
+      description: 'Register a user with name, email and password'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: User object
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Paul Gilbert
+              email:
+                type: string
+                example: gilbert@live.com
+              password:
+                type: string
+                format: password
+                example: strongpassword
+      responses:
+        '201':
+          description: Successful registration
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: User created successfully
+              user:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Paul Gilbert
+                  email:
+                    type: string
+                    example: gilbert@live.com
+        '400':
+          description: Invalid data sent
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              status:
+                type: number
+                example: 400
+              message:
+                type: string
+                example: Invalid email
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Login a user and obtain tokens
+      description: 'Login a user with email and password, Obtain refresh and acess tokens'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: User object
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: gilbert@live.com
+              password:
+                type: string
+                format: password
+                example: strongpassword
+      responses:
+        '201':
+          description: Successful login
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Login session created successfully
+              refreshToken:
+                type: string
+                example: dfedbff414ffe481f34d17aa6683dc88d555db43
+              accessToken:
+                type: string
+                example: >-
+                  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YWI5NDVkYjYxYTM1NDA4NTI1ZTQwOGMiLCJpYXQiOjE1MjIwOTE0OTM4MDQsInR5cCI6ImFjY2VzcyIsImV4cCI6MTUyMjA5MTQ5NzQwNH0.olPAc_JMcMadng6v4Ta_DHJ3niBPCEO9reuToBcjMxU
+        '400':
+          description: Invalid limit parameter
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              status:
+                type: number
+                example: 400
+              message:
+                type: string
+                example: Wrong password
+  /products:
+    get:
+      tags:
+        - products
+      summary: Get list of products
+      description: Get list of products
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: offset
+          description: Number of skipped items
+          required: false
+          type: number
+        - in: query
+          name: limit
+          description: 'Length of product list must be between [1, 200]'
+          required: false
+          type: number
+      responses:
+        '200':
+          description: Successful request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              totalResult:
+                type: number
+                example: 134
+              offset:
+                type: number
+                example: 10
+              currentResult:
+                type: number
+                example: 10
+              products:
+                type: array
+                items:
+                  type: object
+        '400':
+          description: Invalid request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              status:
+                type: number
+                example: 400
+              message:
+                type: string
+                example: Invalid limit parameter
