@@ -7,13 +7,13 @@ const router = express.Router();
 const Product = mongoose.model('Product');
 
 router.get('/', async (req, res, next) => {
-  const querySchema = {
+  const querySchema = Joi.object().keys({
     limit: Joi.number().min(1).max(200).error(genHttpError(400, 'Invalid limit parameter')),
     offset: Joi.number().min(0).error(genHttpError(400, 'Invalid offset parameter')),
-  };
+  });
 
   try {
-    const query = await Joi.validate(req.query, querySchema);
+    const query = await querySchema.validate(req.query);
     const offset = parseInt(query.offset, 10) || 0;
     const limit = parseInt(query.limit, 10) || 100;
     const totalResult = await Product.count({});

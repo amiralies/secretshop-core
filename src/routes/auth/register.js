@@ -7,7 +7,7 @@ const router = express.Router();
 const User = mongoose.model('User');
 
 router.post('/', async (req, res, next) => {
-  const userRegistrationSchema = {
+  const bodySchema = Joi.object().keys({
     name: Joi.string()
       .required()
       .error(genHttpError(400, 'Invalid name')),
@@ -19,10 +19,10 @@ router.post('/', async (req, res, next) => {
       .min(6)
       .required()
       .error(genHttpError(400, 'Invalid password')),
-  };
+  });
 
   try {
-    const body = await Joi.validate(req.body, userRegistrationSchema);
+    const body = await bodySchema.validate(req.body);
     const { name, email, password } = body;
     const user = await new User({ name, email, password }).save();
     res.status(201).json({

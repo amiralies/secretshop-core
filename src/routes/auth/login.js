@@ -9,7 +9,7 @@ const User = mongoose.model('User');
 const Session = mongoose.model('Session');
 
 router.post('/', async (req, res, next) => {
-  const userLoginSchema = {
+  const bodySchema = Joi.object().keys({
     email: Joi.string()
       .email()
       .required()
@@ -17,10 +17,10 @@ router.post('/', async (req, res, next) => {
     password: Joi.string()
       .required()
       .error(genHttpError(400, 'Invalid password')),
-  };
+  });
 
   try {
-    const body = await Joi.validate(req.body, userLoginSchema);
+    const body = await bodySchema.validate(req.body);
     const { email, password } = body;
     const user = await User.findOne({ email });
     if (!user) throw genHttpError(400, 'User not found');
