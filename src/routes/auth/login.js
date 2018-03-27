@@ -26,14 +26,14 @@ router.post('/', async (req, res, next) => {
     if (!user) throw genHttpError(400, 'User not found');
     const isMatch = await user.comparePassword(password);
     if (!isMatch) throw genHttpError(400, 'Wrong password');
-    const refreshToken = await genRefreshToken();
+    const refreshToken = genRefreshToken();
     const accessToken = await genAccessToken(user._id);
-    await new Session({ userId: user._id, refreshToken }).save();
+    await new Session({ userId: user._id, refreshToken: refreshToken.hashed }).save();
 
     res.status(201).json({
       success: true,
       message: 'Login session created successfully',
-      refreshToken,
+      refreshToken: refreshToken.plain,
       accessToken,
     });
   } catch (err) {
