@@ -2,7 +2,7 @@ import express from 'express';
 import Joi from 'joi';
 import mongoose from 'mongoose';
 import validate from '../../middlewares/validate';
-import { genHttpError } from '../../utils/helpers';
+import { genHttpError, sha256 } from '../../utils/helpers';
 import { genRefreshToken, genAccessToken } from '../../utils/tokenGenerator';
 
 const router = express.Router();
@@ -27,12 +27,12 @@ router.post('/', validate({
     if (!isMatch) throw genHttpError(400, 'Wrong password');
     const refreshToken = genRefreshToken();
     const accessToken = await genAccessToken(user._id);
-    await new Session({ userId: user._id, refreshToken: refreshToken.hashed }).save();
+    await new Session({ userId: user._id, refreshToken: sha256(refreshToken) }).save();
 
     res.status(201).json({
       success: true,
       message: 'Login session created successfully',
-      refreshToken: refreshToken.plain,
+      refreshToken,
       accessToken,
     });
   } catch (err) {

@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 /**
  * Generates a http error with status code and error message
  * @param {number} status Http status code
@@ -10,4 +12,13 @@ function genHttpError(status, message) {
   return err;
 }
 
-export { genHttpError }; // eslint-disable-line import/prefer-default-export
+/**
+ * sha256 of a string or buffer
+ * @param {string|Buffer} input a string or buffer to be hashed
+ * @returns {string} hex hash string of input
+ */
+function sha256(input) {
+  return crypto.createHash('sha256').update(input).digest('hex');
+}
+
+export { genHttpError, sha256 };

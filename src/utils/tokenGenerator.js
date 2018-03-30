@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
 import { promisify } from 'util';
 import uuidv4 from 'uuid/v4';
 import config from '../config';
@@ -7,13 +6,11 @@ import config from '../config';
 const jwtSign = promisify(jwt.sign);
 
 /**
- * Generates a uuidv4 and its hash as refresh token
- * @returns {{plain: string, hashed: string}} plain and hashed refreshToken
+ * Generates a uuidv4 as refresh token
+ * @returns {string} uuid refresh token
  */
 function genRefreshToken() {
-  const plain = uuidv4();
-  const hashed = crypto.createHash('sha256').update(plain).digest('hex');
-  const refreshToken = { plain, hashed };
+  const refreshToken = uuidv4();
   return refreshToken;
 }
 
