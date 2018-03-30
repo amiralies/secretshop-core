@@ -1,15 +1,14 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import Joi from 'joi';
-import { genHttpError } from '../../utils/helpers';
 
 const router = express.Router();
 const Product = mongoose.model('Product');
 
 router.get('/', async (req, res, next) => {
   const querySchema = Joi.object().keys({
-    limit: Joi.number().min(1).max(200).error(genHttpError(400, 'Invalid limit parameter')),
-    offset: Joi.number().min(0).error(genHttpError(400, 'Invalid offset parameter')),
+    limit: Joi.number().min(1).max(200),
+    offset: Joi.number().min(0),
   });
 
   try {

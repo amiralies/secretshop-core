@@ -28,7 +28,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/register')
       .send(noNameUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Invalid name');
+    expect(body.message).toBe('child "name" fails because ["name" is required]');
   });
 
   it('should fail on registering a user with no email', async () => {
@@ -36,7 +36,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/register')
       .send(noMailUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Invalid email');
+    expect(body.message).toBe('child "email" fails because ["email" is required]');
   });
 
   it('should fail on registering a user with invalid email', async () => {
@@ -44,7 +44,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/register')
       .send(invalidMailUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Invalid email');
+    expect(body.message).toBe('child "email" fails because ["email" must be a valid email]');
   });
 
   it('should fail on registering a user with no password', async () => {
@@ -52,7 +52,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/register')
       .send(noPasswordUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Invalid password');
+    expect(body.message).toBe('child "password" fails because ["password" is required]');
   });
 
   it('should fail on registering a user with invalid password', async () => {
@@ -60,7 +60,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/register')
       .send(invalidPasswordUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Invalid password');
+    expect(body.message).toBe('child "password" fails because ["password" length must be at least 6 characters long]');
   });
 
   it('should fail on registering auser with existing email', async () => {

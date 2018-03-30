@@ -9,16 +9,13 @@ const User = mongoose.model('User');
 router.post('/', async (req, res, next) => {
   const bodySchema = Joi.object().keys({
     name: Joi.string()
-      .required()
-      .error(genHttpError(400, 'Invalid name')),
+      .required(),
     email: Joi.string()
       .email()
-      .required()
-      .error(genHttpError(400, 'Invalid email')),
+      .required(),
     password: Joi.string()
       .min(6)
-      .required()
-      .error(genHttpError(400, 'Invalid password')),
+      .required(),
   });
 
   try {

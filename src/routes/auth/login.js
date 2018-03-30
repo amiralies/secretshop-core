@@ -12,11 +12,9 @@ router.post('/', async (req, res, next) => {
   const bodySchema = Joi.object().keys({
     email: Joi.string()
       .email()
-      .required()
-      .error(genHttpError(400, 'Invalid email')),
+      .required(),
     password: Joi.string()
-      .required()
-      .error(genHttpError(400, 'Invalid password')),
+      .required(),
   });
 
   try {
