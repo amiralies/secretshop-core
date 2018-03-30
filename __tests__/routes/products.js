@@ -21,7 +21,7 @@ describe('/products route', () => {
     expect(body).toBeDefined();
     expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "offset" fails because ["offset" must be larger than or equal to 0]');
+    expect(body.message).toBe('child "query" fails because [child "offset" fails because ["offset" must be larger than or equal to 0]]');
   });
 
   it('should fail on sending string as offset parameter', async () => {
@@ -29,7 +29,7 @@ describe('/products route', () => {
     expect(body).toBeDefined();
     expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "offset" fails because ["offset" must be a number]');
+    expect(body.message).toBe('child "query" fails because [child "offset" fails because ["offset" must be a number]]');
   });
 
   it('should fail on sending less than min limit parameter', async () => {
@@ -37,7 +37,7 @@ describe('/products route', () => {
     expect(body).toBeDefined();
     expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "limit" fails because ["limit" must be larger than or equal to 1]');
+    expect(body.message).toBe('child "query" fails because [child "limit" fails because ["limit" must be larger than or equal to 1]]');
   });
 
   it('should fail on sending more than max limit parameter', async () => {
@@ -45,7 +45,7 @@ describe('/products route', () => {
     expect(body).toBeDefined();
     expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "limit" fails because ["limit" must be less than or equal to 200]');
+    expect(body.message).toBe('child "query" fails because [child "limit" fails because ["limit" must be less than or equal to 200]]');
   });
 
   it('should fail on sending string as offset parameter', async () => {
@@ -53,6 +53,6 @@ describe('/products route', () => {
     expect(body).toBeDefined();
     expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "limit" fails because ["limit" must be a number]');
+    expect(body.message).toBe('child "query" fails because [child "limit" fails because ["limit" must be a number]]');
   });
 });

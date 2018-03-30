@@ -1,6 +1,7 @@
 import express from 'express';
 import Joi from 'joi';
 import mongoose from 'mongoose';
+import validate from '../../middlewares/validate';
 import { genHttpError } from '../../utils/helpers';
 import { genRefreshToken, genAccessToken } from '../../utils/tokenGenerator';
 
@@ -8,18 +9,18 @@ const router = express.Router();
 const User = mongoose.model('User');
 const Session = mongoose.model('Session');
 
-router.post('/', async (req, res, next) => {
-  const bodySchema = Joi.object().keys({
+router.post('/', validate({
+  body: Joi.object().keys({
     email: Joi.string()
       .email()
       .required(),
     password: Joi.string()
       .required(),
-  });
+  }),
+}), async (req, res, next) => {
+  const { email, password } = req.body;
 
   try {
-    const body = await bodySchema.validate(req.body);
-    const { email, password } = body;
     const user = await User.findOne({ email });
     if (!user) throw genHttpError(400, 'User not found');
     const isMatch = await user.comparePassword(password);

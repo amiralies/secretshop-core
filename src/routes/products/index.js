@@ -1,18 +1,20 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import Joi from 'joi';
+import validate from '../../middlewares/validate';
 
 const router = express.Router();
 const Product = mongoose.model('Product');
 
-router.get('/', async (req, res, next) => {
-  const querySchema = Joi.object().keys({
+router.get('/', validate({
+  query: Joi.object().keys({
     limit: Joi.number().min(1).max(200),
     offset: Joi.number().min(0),
-  });
+  }),
+}), async (req, res, next) => {
+  const { query } = req;
 
   try {
-    const query = await querySchema.validate(req.query);
     const offset = parseInt(query.offset, 10) || 0;
     const limit = parseInt(query.limit, 10) || 100;
     const totalResult = await Product.count({});

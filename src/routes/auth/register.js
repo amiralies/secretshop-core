@@ -1,13 +1,14 @@
 import express from 'express';
 import Joi from 'joi';
 import mongoose from 'mongoose';
+import validate from '../../middlewares/validate';
 import { genHttpError } from '../../utils/helpers';
 
 const router = express.Router();
 const User = mongoose.model('User');
 
-router.post('/', async (req, res, next) => {
-  const bodySchema = Joi.object().keys({
+router.post('/', validate({
+  body: Joi.object().keys({
     name: Joi.string()
       .required(),
     email: Joi.string()
@@ -16,11 +17,11 @@ router.post('/', async (req, res, next) => {
     password: Joi.string()
       .min(6)
       .required(),
-  });
+  }),
+}), async (req, res, next) => {
+  const { name, email, password } = req.body;
 
   try {
-    const body = await bodySchema.validate(req.body);
-    const { name, email, password } = body;
     const user = await new User({ name, email, password }).save();
     res.status(201).json({
       success: true,

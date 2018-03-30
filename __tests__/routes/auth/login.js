@@ -22,7 +22,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(invalidMailUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "email" fails because ["email" must be a valid email]');
+    expect(body.message).toBe('child "body" fails because [child "email" fails because ["email" must be a valid email]]');
   });
 
   it('should fail on login a user with no email', async () => {
@@ -30,7 +30,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(invalidMailUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "email" fails because ["email" is required]');
+    expect(body.message).toBe('child "body" fails because [child "email" fails because ["email" is required]]');
   });
 
   it('should fail on login a user with no password', async () => {
@@ -38,7 +38,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(invalidPasswordUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "password" fails because ["password" is required]');
+    expect(body.message).toBe('child "body" fails because [child "password" fails because ["password" is required]]');
   });
 
   it('should fail on login with unregistered email', async () => {
