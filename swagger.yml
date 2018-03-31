@@ -42,12 +42,6 @@ paths:
           schema:
             type: object
             properties:
-              success:
-                type: boolean
-                example: true
-              message:
-                type: string
-                example: User created successfully
               user:
                 type: object
                 properties:
@@ -62,21 +56,23 @@ paths:
           schema:
             type: object
             properties:
-              success:
-                type: boolean
-                example: false
-              status:
-                type: number
-                example: 400
-              message:
-                type: string
-                example: Invalid email
+              error:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid email
   /auth/login:
     post:
       tags:
         - auth
       summary: Login a user and obtain tokens
-      description: 'Login a user with email and password, Obtain refresh and acess tokens'
+      description: >-
+        Login a user with email and password, Obtain refresh and acess tokens /
+        obtain access token with refreh token
       consumes:
         - application/json
       produces:
@@ -89,25 +85,32 @@ paths:
           schema:
             type: object
             properties:
+              grantType:
+                type: string
+                description: can be 'password' or 'refrehToken'
+                example: password
               email:
                 type: string
                 example: gilbert@live.com
+                description: required when grantType is password
               password:
                 type: string
                 format: password
                 example: strongpassword
+                description: required when grantType is password
+              refreshToken:
+                type: string
+                description: required when grantType is refreshToken
+            example:
+              grantType: password
+              email: gilbert@live.com
+              password: strongpassword
       responses:
         '201':
           description: Successful login
           schema:
             type: object
             properties:
-              success:
-                type: boolean
-                example: true
-              message:
-                type: string
-                example: Login session created successfully
               refreshToken:
                 type: string
                 example: dfedbff414ffe481f34d17aa6683dc88d555db43
@@ -116,19 +119,19 @@ paths:
                 example: >-
                   eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YWI5NDVkYjYxYTM1NDA4NTI1ZTQwOGMiLCJpYXQiOjE1MjIwOTE0OTM4MDQsInR5cCI6ImFjY2VzcyIsImV4cCI6MTUyMjA5MTQ5NzQwNH0.olPAc_JMcMadng6v4Ta_DHJ3niBPCEO9reuToBcjMxU
         '400':
-          description: Invalid limit parameter
+          description: Invalid data sent
           schema:
             type: object
             properties:
-              success:
-                type: boolean
-                example: false
-              status:
-                type: number
-                example: 400
-              message:
-                type: string
-                example: Wrong password
+              error:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Wrong password
   /products:
     get:
       tags:
@@ -154,9 +157,6 @@ paths:
           schema:
             type: object
             properties:
-              success:
-                type: boolean
-                example: true
               totalResult:
                 type: number
                 example: 134
@@ -175,12 +175,12 @@ paths:
           schema:
             type: object
             properties:
-              success:
-                type: boolean
-                example: false
-              status:
-                type: number
-                example: 400
-              message:
-                type: string
-                example: Invalid limit parameter
+              error:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid limit parameter
