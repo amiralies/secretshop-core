@@ -7,8 +7,6 @@ describe('/products route', () => {
   it('should get list of products with no filter ', async () => {
     const { statusCode, body } = await server.get('/products');
     expect(statusCode).toBe(200);
-    expect(body).toBeDefined();
-    expect(body.success).toBeTruthy();
     expect(body.offset).toBeDefined();
     expect(body.totalResult).toBeDefined();
     expect(body.currentResult).toBeDefined();
@@ -18,41 +16,31 @@ describe('/products route', () => {
 
   it('should fail on sending negative offset parameter', async () => {
     const { statusCode, body } = await server.get('/products?offset=-1');
-    expect(body).toBeDefined();
-    expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "query" fails because [child "offset" fails because ["offset" must be larger than or equal to 0]]');
+    expect(body.error.message).toBe('child "query" fails because [child "offset" fails because ["offset" must be larger than or equal to 0]]');
   });
 
   it('should fail on sending string as offset parameter', async () => {
     const { statusCode, body } = await server.get('/products?offset=foo');
-    expect(body).toBeDefined();
-    expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "query" fails because [child "offset" fails because ["offset" must be a number]]');
+    expect(body.error.message).toBe('child "query" fails because [child "offset" fails because ["offset" must be a number]]');
   });
 
   it('should fail on sending less than min limit parameter', async () => {
     const { statusCode, body } = await server.get('/products?limit=0');
-    expect(body).toBeDefined();
-    expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "query" fails because [child "limit" fails because ["limit" must be larger than or equal to 1]]');
+    expect(body.error.message).toBe('child "query" fails because [child "limit" fails because ["limit" must be larger than or equal to 1]]');
   });
 
   it('should fail on sending more than max limit parameter', async () => {
     const { statusCode, body } = await server.get('/products?limit=201');
-    expect(body).toBeDefined();
-    expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "query" fails because [child "limit" fails because ["limit" must be less than or equal to 200]]');
+    expect(body.error.message).toBe('child "query" fails because [child "limit" fails because ["limit" must be less than or equal to 200]]');
   });
 
   it('should fail on sending string as offset parameter', async () => {
     const { statusCode, body } = await server.get('/products?limit=foo');
-    expect(body).toBeDefined();
-    expect(body.success).toBeFalsy();
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "query" fails because [child "limit" fails because ["limit" must be a number]]');
+    expect(body.error.message).toBe('child "query" fails because [child "limit" fails because ["limit" must be a number]]');
   });
 });

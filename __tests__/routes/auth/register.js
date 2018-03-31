@@ -28,7 +28,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/register')
       .send(noNameUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "name" fails because ["name" is required]]');
+    expect(body.error.message).toBe('child "body" fails because [child "name" fails because ["name" is required]]');
   });
 
   it('should fail on registering a user with no email', async () => {
@@ -36,7 +36,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/register')
       .send(noMailUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "email" fails because ["email" is required]]');
+    expect(body.error.message).toBe('child "body" fails because [child "email" fails because ["email" is required]]');
   });
 
   it('should fail on registering a user with invalid email', async () => {
@@ -44,7 +44,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/register')
       .send(invalidMailUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "email" fails because ["email" must be a valid email]]');
+    expect(body.error.message).toBe('child "body" fails because [child "email" fails because ["email" must be a valid email]]');
   });
 
   it('should fail on registering a user with no password', async () => {
@@ -52,7 +52,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/register')
       .send(noPasswordUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "password" fails because ["password" is required]]');
+    expect(body.error.message).toBe('child "body" fails because [child "password" fails because ["password" is required]]');
   });
 
   it('should fail on registering a user with invalid password', async () => {
@@ -60,24 +60,22 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/register')
       .send(invalidPasswordUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "password" fails because ["password" length must be at least 6 characters long]]');
+    expect(body.error.message).toBe('child "body" fails because [child "password" fails because ["password" length must be at least 6 characters long]]');
   });
 
   it('should fail on registering auser with existing email', async () => {
     const { statusCode, body } = await server.post('/auth/register')
       .send(existingUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Email already exists');
+    expect(body.error.message).toBe('Email already exists');
   });
 
   it('should register a user successfully', async () => {
     const { statusCode, body } = await server.post('/auth/register')
       .send(mockUser);
     expect(statusCode).toBe(201);
-    expect(body.success).toBeTruthy();
     expect(body.user.name).toBe(mockUser.name);
     expect(body.user.email).toBe(mockUser.email);
-    expect(body.message).toBe('User created successfully');
   });
 
   afterAll(async () => {

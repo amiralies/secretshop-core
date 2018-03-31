@@ -24,8 +24,6 @@ router.post('/', validate({
   try {
     const user = await new User({ name, email, password }).save();
     res.status(201).json({
-      success: true,
-      message: 'User created successfully',
       user: {
         name: user.name,
         email: user.email,

@@ -31,7 +31,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(noGrantTypeUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "grantType" fails because ["grantType" is required]]');
+    expect(body.error.message).toBe('child "body" fails because [child "grantType" fails because ["grantType" is required]]');
   });
 
   it('should fail on login a user with invalid grantType', async () => {
@@ -39,7 +39,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(invalidGrantTypeUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "grantType" fails because ["grantType" must be one of [password, refreshToken]]]');
+    expect(body.error.message).toBe('child "body" fails because [child "grantType" fails because ["grantType" must be one of [password, refreshToken]]]');
   });
 
   it('should fail on login a user with invalid email', async () => {
@@ -47,7 +47,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(invalidMailUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "email" fails because ["email" must be a valid email]]');
+    expect(body.error.message).toBe('child "body" fails because [child "email" fails because ["email" must be a valid email]]');
   });
 
   it('should fail on login a user with no email', async () => {
@@ -55,7 +55,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(noMailUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "email" fails because ["email" is required]]');
+    expect(body.error.message).toBe('child "body" fails because [child "email" fails because ["email" is required]]');
   });
 
   it('should fail on login a user with no password', async () => {
@@ -63,7 +63,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(noPasswordUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "password" fails because ["password" is required]]');
+    expect(body.error.message).toBe('child "body" fails because [child "password" fails because ["password" is required]]');
   });
 
   it('should fail on login with unregistered email', async () => {
@@ -71,7 +71,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(unregisteredMailUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('User not found');
+    expect(body.error.message).toBe('User not found');
   });
 
   it('should fail on login with wrong password', async () => {
@@ -79,14 +79,12 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(wrongPasswordUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Wrong password');
+    expect(body.error.message).toBe('Wrong password');
   });
 
   it('should login a user with email and password successfully', async () => {
     const { statusCode, body } = await server.post('/auth/login').send(mockUser);
     expect(statusCode).toBe(201);
-    expect(body.success).toBeTruthy();
-    expect(body.message).toBe('Login session created successfully');
     expect(typeof body.refreshToken).toBe('string');
     expect(body.refreshToken).not.toBe('');
     expect(typeof body.accessToken).toBe('string');
@@ -98,7 +96,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(noGrantTypeUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "grantType" fails because ["grantType" is required]]');
+    expect(body.error.message).toBe('child "body" fails because [child "grantType" fails because ["grantType" is required]]');
   });
 
   it('should fail on obtain an accessToken with invalid grantType', async () => {
@@ -106,7 +104,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(invalidGrantTypeUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "grantType" fails because ["grantType" must be one of [password, refreshToken]]]');
+    expect(body.error.message).toBe('child "body" fails because [child "grantType" fails because ["grantType" must be one of [password, refreshToken]]]');
   });
 
   it('should fail on obtain an accessToken with invalid refreshToken', async () => {
@@ -114,7 +112,7 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(invalidRefreshTokenUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('Invalid refreshToken');
+    expect(body.error.message).toBe('Invalid refreshToken');
   });
 
   it('should fail on obtain an accessToken with no refreshToken', async () => {
@@ -122,14 +120,12 @@ describe('/auth/register route', () => {
     const { statusCode, body } = await server.post('/auth/login')
       .send(noRefreshTokenUser);
     expect(statusCode).toBe(400);
-    expect(body.message).toBe('child "body" fails because [child "refreshToken" fails because ["refreshToken" is required]]');
+    expect(body.error.message).toBe('child "body" fails because [child "refreshToken" fails because ["refreshToken" is required]]');
   });
 
   it('should obtain an accesToken successfully', async () => {
     const { statusCode, body } = await server.post('/auth/login').send(mockUserWithRefreshToken);
     expect(statusCode).toBe(201);
-    expect(body.success).toBeTruthy();
-    expect(body.message).toBe('Access token generated successfully');
     expect(typeof body.accessToken).toBe('string');
     expect(body.accessToken).not.toBe('');
   });

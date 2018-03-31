@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   const { message } = err;
   const status = err.status || 500;
-  res.status(status).json({ success: false, status, message });
+  res.status(status).json({ error: { code: status, message } });
 });
 
 export default app;

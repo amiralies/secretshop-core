@@ -37,8 +37,6 @@ router.post('/', validate({
       await new Session({ userId: user._id, refreshToken: sha256(refreshToken) }).save();
 
       res.status(201).json({
-        success: true,
-        message: 'Login session created successfully',
         refreshToken,
         accessToken,
       });
@@ -55,8 +53,6 @@ router.post('/', validate({
       const accessToken = await genAccessToken(session.userId);
 
       res.status(201).json({
-        success: true,
-        message: 'Access token generated successfully',
         accessToken,
       });
     } catch (err) {

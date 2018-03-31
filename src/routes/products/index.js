@@ -21,7 +21,6 @@ router.get('/', validate({
     const products = await Product.find({}).skip(offset).limit(limit);
 
     res.status(200).json({
-      success: true,
       totalResult,
       offset,
       currentResult: products.length,
